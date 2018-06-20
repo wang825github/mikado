@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	  	http://www.springframework.org/schema/tx
+    	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context
+	 	http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	 	default-autowire="byName">
+	 
+		<bean id="dataSourceTrackingWeb" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://192.168.199.202:3306/trackingwebsite?useUnicode=true&amp;characterEncoding=UTF8&amp;serverTimezone=GMT&amp;useSSL=false"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+<!-- 	 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://rm-2ze0zq04zw4w7cii4o.mysql.rds.aliyuncs.com/trackingweb?useUnicode=true&amp;characterEncoding=UTF8&amp;serverTimezone=GMT&amp;useSSL=false"></property>
+		<property name="username" value="tracking"></property>
+		<property name="password" value="E7E2bmB66)S8"></property>
+	</bean> -->
+		 <bean id="sessionFactoryTrackingWeb" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+			<property name="dataSource" ref="dataSourceTrackingWeb" />
+			<property name="hibernateProperties">
+				<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect </prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				</props>
+			</property>
+			<property name="packagesToScan" value="com.shinetech.dalian.mikado.Trancking.entity"/>
+		</bean>
+		
+	<!--  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="url" value="jdbc:sqlserver://DESKTOP-61AL7VO\SQLEXPRESS:1433;DatabaseName=mikado;useUnicode=true&amp;characterEncoding=UTF-8"></property>
+		<property name="username" value="sa"></property>
+		<property name="password" value="123456"></property>
+	</bean> -->
+	
+	<!-- Initialization DB !!!! -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+<property name="url" value="jdbc:sqlserver://DESKTOP-8FJQ851\SQLEXPRESS:1433;DatabaseName=mikado;useUnicode=true&amp;characterEncoding=UTF-8"></property>
+		<property name="username" value="wang"></property>
+		<property name="password" value="123456"></property>
+	</bean>
+	<!-- Initialization DB !!!! -->
+	
+	
+	
+	<bean id="txManager2"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactoryTrackingWeb" />
+    </bean>
+    
+	<!-- 配置数据源 -->
+    <context:annotation-config/>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+			<!-- 
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect </prop>
+			 -->
+			 <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</prop>
+			<prop key="hibernate.hbm2ddl.auto">none</prop>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.format_sql">false</prop>
+			
+			</props>
+		</property>
+		<property name="packagesToScan" value="com.shinetech.dalian.mikado.entity"/>
+	</bean>
+	
+	<bean id="txManager"
+        class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+	<tx:annotation-driven transaction-manager="txManager"/>
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="create*" propagation="REQUIRED" />
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="import*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" isolation="READ_COMMITTED"/>
+            <tx:method name="upload*" propagation="REQUIRED" />
+            <tx:method name="batchUpload*" propagation="REQUIRED" />
+            <tx:method name="merge*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="remove*" propagation="REQUIRED" />
+            <tx:method name="clear*" propagation="REQUIRED" />
+            <tx:method name="put*" propagation="REQUIRED" />
+            <tx:method name="use*" propagation="REQUIRED" />
+            <tx:method name="get*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="load*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="count*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="after*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="list*" propagation="REQUIRED" />
+            <tx:method name="pag*" propagation="REQUIRED" />
+            <tx:method name="query*" propagation="REQUIRED" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 只对业务逻辑(service)层实施事务 -->
+    <!-- com.shinetech.dalian.mikado.service -->
+    <aop:config>
+        <aop:pointcut id="txPointcut" 
+            expression="execution(* com.shinetech.*.*(..))" />
+        <aop:advisor  advice-ref="txAdvice" pointcut-ref="txPointcut" />
+    </aop:config>
+</beans>

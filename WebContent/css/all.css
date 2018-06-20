@@ -1,0 +1,248 @@
+/*!
+ *
+ * 2017.5.2
+ */
+.footer, .header {
+	background: #5bc0de
+}
+
+.content, .content .detail .form-inline .form-group {
+	vertical-align: top
+}
+
+.clearfix, .header:after, .search-result:after {
+	content: "";
+	clear: both
+}
+
+body {
+	font-family: "Microsoft Yahei", Helvetica, Arial, sans-serif
+}
+
+body.modal-open {
+    overflow: auto;
+}
+
+textarea {
+	resize: none
+}
+
+a, a:focus, a:hover {
+	color: #333
+}
+
+.mt15 {
+	margin-top: 15px
+}
+
+.p-color {
+	color: #5bc0de
+}
+
+.gray {
+	color: #333
+}
+
+.strong {
+	font-weight: 700
+}
+
+.clearfix {
+	display: table
+}
+
+.small-block {
+	display: block;
+	margin-left: 10px
+}
+
+.header {
+	height: 80px;
+	line-height: 80px
+}
+
+.header:after {
+	display: table
+}
+
+
+.header .logo {
+	margin: 0;
+	color: #fff;
+	line-height: 80px;
+	width:25%;
+	margin-left:5px;
+}
+
+label.error{
+	color:red;
+}
+
+.header p {
+	margin-bottom: 0;
+	color: #fff
+}
+
+span .required:{
+	color: #ff0000;
+ 	font-size: 150%;
+}
+
+.footer {
+	height: 60px;
+	width: 100%;
+	line-height: 60px;
+	z-index: 2
+}
+
+.footer p {
+	margin-bottom: 0;
+	color: #fff;
+	font-size: 12px
+}
+
+.panel-info>.panel-heading {
+	color: #fff;
+	background-color: #5bc0de;
+	border-color: #5bc0de;
+	font-size: 16px
+}
+
+.qrcode-info .table>tbody>tr>th {
+	width: 35%
+}
+
+.page {
+	padding: 0
+}
+
+.sidebar {
+	display: table-cell;
+	padding: 20px;
+	background: #e6e6e6
+}
+
+.sidebar .nav-pills>li>a {
+	width: 200px;
+	background: #f4f4f4
+}
+
+.sidebar .nav-pills>li>a:hover {
+	background-color: #5bc0de
+}
+
+.sidebar .nav-pills>li>a small {
+	display: block;
+	font-size: 12px
+}
+
+.sidebar .nav-pills>li.active>a {
+	background: #5bc0de
+}
+
+.sidebar .nav-stacked>li+li {
+	margin-top: 10px
+}
+
+.content {
+	display: table-cell;
+	padding: 20px;
+	width: 100%;
+	background: #f4f4f4
+}
+
+.content .detail {
+	padding: 20px;
+	background: #fff
+}
+
+.content .detail .title {
+	margin-top: 0;
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc
+}
+
+.content .detail .title small {
+	margin-left: 15px
+}
+
+.content .detail .form-inline .form-group label small {
+	display: block;
+	font-weight: 400;
+	line-height: 1;
+	color: #999
+}
+
+.content .detail .form-inline .form-group .form-control {
+	margin-bottom: 10px;
+	margin-right: 10px;
+	width: 150px;
+	vertical-align: top
+}
+
+.content .detail .table label {
+	margin-bottom: 0
+}
+
+.content .detail .table label input[type=checkbox] {
+	margin-top: 0;
+	vertical-align: middle
+}
+
+.content .detail .table>thead>tr>th {
+	vertical-align: middle;
+	white-space: nowrap
+}
+
+.content .detail .table>tbody>tr>td {
+	vertical-align: middle
+}
+
+.content .detail .table>tbody>tr>td button {
+	margin-bottom: 5px
+}
+
+.content .detail .pagination {
+	margin-top: 0
+}
+
+.search-result {
+	margin-top: 25px
+}
+
+.search-result:after {
+	display: table
+}
+
+.table-responsive .pull-left{
+	margin-top:10px;
+	margin-right:6px;
+}
+
+.search-result .search-result-title {
+	font-size: 16px
+}
+
+.login-page .logo, .qrcode-info .logo, .search-index .logo {
+	margin-top: 10%;
+	margin-bottom: 30px;
+	color: #f0ad4e;
+	font-size: 5rem;
+	text-shadow: 1px 1px 2px #333
+}
+
+.login-page .logo {
+	margin-top: 15%;
+	font-size: 3rem;
+}
+
+
+.qrcode-info .logo {
+	margin-top: 20px
+}
+
+.modal-body label small {
+	font-weight: 400;
+	color: #666
+}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd  
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/cache 
+     	http://www.springframework.org/schema/cache/spring-cache.xsd
+     	http://www.springframework.org/schema/util
+    	http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    	http://www.springframework.org/schema/aop
+    	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+    	http://www.springframework.org/schema/cache
+    	http://www.springframework.org/schema/cache/spring-cache.xsd
+     	">
+     <cache:annotation-driven />
+      
+     <!-- 打印FilesUtils日志开关 -->
+	<util:properties id="configProperties" location="classpath:logSwtich.properties"></util:properties>  
+     <!-- 静态资源(js/image)的访问 -->
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/fonts/" mapping="/fonts/**" />
+	<mvc:resources location="/images/" mapping="/images/**" />
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/login" />
+			<mvc:exclude-mapping path="/login/**" />
+			<mvc:exclude-mapping path="/css/**" />
+			<mvc:exclude-mapping path="/js/**" />
+			<mvc:exclude-mapping path="/fonts/**" />
+			<mvc:exclude-mapping path="/images/**" />
+			<!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+			<bean class="com.shinetech.dalian.mikado.util.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<context:component-scan base-package="package com.shinetech.*" />
+	<!--  开启AOP -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+ <bean id="webMvcAdvisor" class="com.shinetech.dalian.mikado.util.interceptor.MvcMethodLogAdvice" />  
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".jsp"></property>
+		
+	</bean>
+	
+	 <bean id="userServiceSecurity" class="com.shinetech.dalian.mikado.service.impl.UserServiceSecurityImpl"></bean>
+	 
+	 <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600"/>
+        <property name="maxInMemorySize" value="4096"/>
+     </bean>
+     
+	<bean id="logSwitchFlat" class="com.shinetech.dalian.mikado.entity.LogSwitch">
+        <property name="flat" value="ok"/>
+ 	</bean>
+	<!-- 开启注解 -->
+	<mvc:annotation-driven />
+	<!-- <import resource="classpath*:spring-hibernateTrackingWeb-database.xml"/> -->
+	<import resource="classpath*:spring-hibernate-database.xml"/>
+
+	<import resource="classpath*:spring-security.xml"/>
+</beans>

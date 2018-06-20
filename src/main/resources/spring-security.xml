@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security" 
+    xmlns:b="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">  
+
+	
+	<http pattern="/login.jsp" security="none" />
+	<http pattern="/js/*" security="none" />
+	<http pattern="/css/*" security="none" />
+	<http pattern="/fonts/*" security="none" />
+	<http pattern="/images/*" security="none" />
+	<http pattern="/jsp/*" security="none" />
+	
+	<http auto-config="true" create-session="always">
+		
+		<form-login login-page="/" 
+					login-processing-url="/j_spring_security_check"
+					authentication-failure-url="/?error=true" 
+					default-target-url="/user/manage" 
+					always-use-default-target="true"
+		 />
+		 <csrf disabled="true"/>
+	</http>
+	<authentication-manager erase-credentials="false" >
+		<authentication-provider user-service-ref="userServiceSecurity" />
+	</authentication-manager>
+ 
+</b:beans>
+    
