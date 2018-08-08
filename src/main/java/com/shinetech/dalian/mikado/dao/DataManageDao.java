@@ -158,4 +158,6 @@ public interface DataManageDao {
 
 	DataManageEntity getLastOrderLotNumber(String code);
 
+	DataManageEntity getLastOrderLotNumberBySql(String code);
+
 }

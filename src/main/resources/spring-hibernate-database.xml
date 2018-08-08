@@ -15,12 +15,12 @@
 	 	http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 	 	default-autowire="byName">
 	 
-		<bean id="dataSourceTrackingWeb" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+			<bean id="dataSourceTrackingWeb" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://192.168.199.202:3306/trackingwebsite?useUnicode=true&amp;characterEncoding=UTF8&amp;serverTimezone=GMT&amp;useSSL=false"></property>
-		<property name="username" value="root"></property>
-		<property name="password" value="root"></property>
-	</bean>
+		<property name="url" value="jdbc:mysql://rm-2ze0zq04zw4w7cii4o.mysql.rds.aliyuncs.com:3306/tracktest?useUnicode=true&amp;characterEncoding=UTF8&amp;serverTimezone=GMT&amp;useSSL=false"></property>
+		<property name="username" value="tracktest"></property>
+		<property name="password" value="nFhDQU7HFJoNpBVD"></property>
+		</bean>
 <!-- 	 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
 		<property name="url" value="jdbc:mysql://rm-2ze0zq04zw4w7cii4o.mysql.rds.aliyuncs.com/trackingweb?useUnicode=true&amp;characterEncoding=UTF8&amp;serverTimezone=GMT&amp;useSSL=false"></property>

@@ -11,7 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 
 @Entity
 @Table(name="users")
-@Cacheable(value="userEntity")
+//@Cacheable(value="userEntity")
 public class UserEntity {
 	private Integer id;
 	private String account; // user account

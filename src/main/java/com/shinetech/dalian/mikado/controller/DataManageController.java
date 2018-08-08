@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,7 @@ import com.shinetech.dalian.mikado.service.DataManageService;
 import com.shinetech.dalian.mikado.service.DictionaryService;
 import com.shinetech.dalian.mikado.service.LogManageService;
 import com.shinetech.dalian.mikado.service.SeedService;
+import com.shinetech.dalian.mikado.util.FileLogUtils;
 import com.shinetech.dalian.mikado.util.MakeNumbersDetails;
 import com.shinetech.dalian.mikado.util.ResultMessage;
 /**
@@ -63,7 +65,8 @@ public class DataManageController extends BaseController{
 	private LogContent logContent;
 	@Autowired
 	private SeedService seedService;
-	
+	@Autowired
+	private FileLogUtils fileLogUtils;
 	/**
 	 * Direct to order management page
 	 * @param request
@@ -231,13 +234,25 @@ public class DataManageController extends BaseController{
 	}
 	
 	@RequestMapping(value="/generateLotNumber",method = RequestMethod.GET)
-	   public @ResponseBody JsonObject generateLotNumber(HttpServletRequest request,Integer seedID) throws NoSuchAlgorithmException{
+	   public @ResponseBody JsonObject generateLotNumber(HttpServletRequest request,Integer seedID) {
+			fileLogUtils.writeLog("-------Controller  generateLotNumber开始------"," ");
+			StopWatch watch=new  StopWatch();
+			watch.start("seedService.getSeedById(seedID): "+seedID);
 		    SeedEntity seedEntity=seedService.getSeedById(seedID);
+		    watch.stop();
 		    
+			watch.start("dataManageService.getLotNumber");
 			String lotNumber=dataManageService.getLotNumber(getYear()+seedEntity.getSpecies().getCropCode());
-			
+		    watch.stop();
+		    
+			watch.start("addProperty");
 			JsonObject json = new JsonObject();
 			json.addProperty("lotNumber", lotNumber);
+		    watch.stop();
+		    String res = watch.prettyPrint();
+		    System.out.println(res);
+		    fileLogUtils.writeLog(res," ");
+		    fileLogUtils.writeLog("-------Controller  generateLotNumber结束------"," ");
 			return json;
 	   }
 	

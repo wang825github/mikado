@@ -23,6 +23,7 @@ import org.apache.poi.ss.util.Region;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import com.shinetech.dalian.mikado.dao.CustomerDao;
 import com.shinetech.dalian.mikado.dao.DataManageDao;
@@ -41,6 +42,7 @@ import com.shinetech.dalian.mikado.entity.StorageEntity;
 import com.shinetech.dalian.mikado.entity.VarietyEntity;
 import com.shinetech.dalian.mikado.entity.vo.DataManageDto;
 import com.shinetech.dalian.mikado.entity.vo.DataManageVO;
+import com.shinetech.dalian.mikado.util.FileLogUtils;
 
 /**
  * 
@@ -61,7 +63,8 @@ public class DataManageService {
 	private ProductionDao productionDao;
 	@Autowired
 	private CustomerDao customerDao;
-	
+	@Autowired
+	private FileLogUtils fileLogUtils;
 	/**
 	 * Get orders from DB by search conditions
 	 * The search conditions contain conmercialName,cityId and salesManagerId
@@ -721,7 +724,16 @@ public class DataManageService {
 	}
 	
 	public String getLotNumber(String code){
-		DataManageEntity dataManageEntity =dataManageDao.getLastOrderLotNumber(code);
+		StopWatch watch=new  StopWatch();
+		fileLogUtils.writeLog("-DataManageService.getLotNumber开始-"," ");
+		watch.start("dataManageDao.getLastOrderLotNumber(code) :"+code);
+//		DataManageEntity dataManageEntity =dataManageDao.getLastOrderLotNumber(code);
+		DataManageEntity dataManageEntity =dataManageDao.getLastOrderLotNumberBySql(code);
+		
+		watch.stop();
+		String res = watch.prettyPrint();
+		fileLogUtils.writeLog(res," ");
+		fileLogUtils.writeLog("-DataManageService.getLotNumber结束-"," ");
 		 if(dataManageEntity==null){
 			 return code+"0001";
 		 }else{

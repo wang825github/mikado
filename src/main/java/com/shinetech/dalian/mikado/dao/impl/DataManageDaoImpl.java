@@ -3,14 +3,20 @@ package com.shinetech.dalian.mikado.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import com.shinetech.dalian.mikado.basedao.BaseDao;
+import com.shinetech.dalian.mikado.basedao.HibernateDao;
 import com.shinetech.dalian.mikado.dao.DataManageDao;
 import com.shinetech.dalian.mikado.entity.DataManageEntity;
 import com.shinetech.dalian.mikado.entity.PackageEntity;
+import com.shinetech.dalian.mikado.util.FileLogUtils;
 /**
  * 
  * @author abc
@@ -18,10 +24,15 @@ import com.shinetech.dalian.mikado.entity.PackageEntity;
  */
 @Service
 @Repository
-public class DataManageDaoImpl implements DataManageDao {
+public class DataManageDaoImpl extends HibernateDao implements DataManageDao {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 150185096075725240L;
 	@Autowired
 	private BaseDao baseDao;
-	
+	@Autowired
+	private FileLogUtils fileLogUtils;
 	/**
 	 * Insert a data manage into DB
 	 */
@@ -352,11 +363,34 @@ public class DataManageDaoImpl implements DataManageDao {
 		String hql = "FROM DataManageEntity dm WHERE dm.lotNumbers = '"+lotNumbers+"'";
 		return baseDao.executeGetFirst(hql);
 	}
+	//select datamanage0_.id as id1_3_, datamanage0_.customer_id as custome10_3_, datamanage0_.delivery_amount as delivery2_3_, datamanage0_.delivery_time as delivery3_3_, datamanage0_.is_sample as is_sampl4_3_, datamanage0_.logistics_id as logisti11_3_, datamanage0_.lot_numbers as lot_numb5_3_, datamanage0_.odd_numbers as odd_numb6_3_, datamanage0_.out_storage_day as out_stor7_3_, datamanage0_.receiving_time as receivin8_3_, datamanage0_.status as status9_3_, datamanage0_.storage_id as storage12_3_ from data_manage datamanage0_ where datamanage0_.lot_numbers like '2018S%' order by datamanage0_.lot_numbers desc
+	public DataManageEntity getLastOrderLotNumberBySql(String code) {
+		Session session = super.getSession();
+//		String sql = " select * from data_manage where lot_numbers like :code % order by lot_numbers desc";
+		String sql =  " select * from  data_manage where lot_numbers like '" + code +"%' ORDER BY lot_numbers desc";
+		Query query = session.createNativeQuery(sql);
+		
+		List<DataManageEntity> orders = query.getResultList();
+		   if(CollectionUtils.isNotEmpty(orders))
+			   return orders.get(0);
+		   else 
+			   return  null;
+	}
 	
 	@Override
 	public DataManageEntity getLastOrderLotNumber(String code) {
+		System.out.println("-DataManageDaoImpl.getLastOrderLotNumber开始-");
+		fileLogUtils.writeLog("-DataManageDaoImpl.getLastOrderLotNumber开始-"," ");
+		StopWatch watch=new  StopWatch();
+		watch.start("DataManageDaoImpl.getLastOrderLotNumber(code)");
 		String hql = " From DataManageEntity where lotNumbers like '" + code +"%' ORDER BY lotNumbers desc";
 		List<DataManageEntity> orders= baseDao.execute(hql);
+		watch.stop();
+	    fileLogUtils.writeLog( watch.prettyPrint()," ");
+	    if(CollectionUtils.isNotEmpty(orders))
+	    fileLogUtils.writeLog( "List<DataManageEntity> size: "+orders.size()," ");
+		fileLogUtils.writeLog("-DataManageDaoImpl.getLastOrderLotNumber 结束-"," ");
+		System.out.println("-DataManageDaoImpl.getLastOrderLotNumber结束-");
 		if(orders!=null&&!orders.isEmpty()){
 			return orders.get(0);
 		}else{

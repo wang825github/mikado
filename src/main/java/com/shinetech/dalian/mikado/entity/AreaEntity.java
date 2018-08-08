@@ -11,7 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 
 @Entity
 @Table(name="area")
-@Cacheable
+//@Cacheable
 public class AreaEntity {
 	private Integer id;
 	private String nameCn; //area Chinese name

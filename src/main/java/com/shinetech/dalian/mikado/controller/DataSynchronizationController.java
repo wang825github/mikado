@@ -63,6 +63,7 @@ public class DataSynchronizationController {
 		if(synModel == 0 ){
 			//0 Batch synchronization
 			  dm = dataManageDao.getDataManageByLotNumbers(code);
+			  System.out.println("dm id: "+dm.getId());
 			if(dm == null)
 				return 2;// The product has not been shipped yet
 		}else{
@@ -74,10 +75,13 @@ public class DataSynchronizationController {
 				return 3;// The product has not been shipped yet
 			}
 			dm = dataManageDao.getDataManageById(pe.getDataManageId());
-			dm.setProductions(null);//Empty everything else
-			List<ProductionsEntity> productions = new ArrayList<ProductionsEntity>(); // 产品信息
-			productions.add(pe);
-			dm.setProductions(productions);
+			System.out.println("dm setProductions: "+dm.getProductions().size() );
+			  System.out.println("dm id: "+dm.getId());
+			 // 如果是模式1 则只同步一个
+//			  	dm.setProductions(null);//Empty everything else
+//				List<ProductionsEntity> productions = new ArrayList<ProductionsEntity>(); // 产品信息
+//				dm.setProductions(productions);
+//				productions.add(pe);
 		}
 		//Start synchronizing data
 		int res = trackingWebService.saveTrackingWeb(dm);

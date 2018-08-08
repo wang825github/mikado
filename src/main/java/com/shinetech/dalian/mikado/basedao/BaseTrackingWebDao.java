@@ -61,7 +61,20 @@ public class BaseTrackingWebDao extends HibernateTrackingDao{
 		tx.commit(); 
 		session.close();
 	}
+	public  int  createNativeQueryTx(String  sql) {
+		Session session = super.openSession();
+		Transaction tx = session.beginTransaction();
+		int  res = session.createNativeQuery(sql).executeUpdate();
+		tx.commit();
+		session.close();
+		return  res;
+	}
 	
+	public  int createNativeQuery(String  sql) {
+		Session session = super.openSession();
+		
+		return session.createNativeQuery(sql).executeUpdate();
+	}
 	public <E> int deleteEntity(final Class<E> clazz,final Integer id){
 		Session session = super.openSession();
 		String hqlString = "DELETE FROM " + clazz.getName() + " o WHERE o.id = " + id;

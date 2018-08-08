@@ -24,12 +24,11 @@ public class FileLogUtils {
 	@Qualifier(value ="logSwitchFlat")
 	public LogSwitch log;
 	
-	public  void  writeLog( String operationType,String str) throws IOException {
+	public  void  writeLog( String operationType,String str)  {
 		
-		System.out.println("log : "+log.getFlat());
-		if(StringUtils.equalsIgnoreCase(LogSwitch, "false") || StringUtils.isEmpty(LogSwitch) ) {
-			return;
-		}
+//		if( StringUtils.isEmpty(LogSwitch)||StringUtils.isBlank(LogSwitch) ) {
+//			return;
+//		}
 		String dirs = "C://Log";
 		String filePath =  dirs+"//"+LocalDate.now()+"-log.txt";
 		try {

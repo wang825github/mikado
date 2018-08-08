@@ -19,10 +19,7 @@
     	http://www.springframework.org/schema/util/spring-util-3.0.xsd
     	http://www.springframework.org/schema/aop
     	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-    	http://www.springframework.org/schema/cache
-    	http://www.springframework.org/schema/cache/spring-cache.xsd
      	">
-     <cache:annotation-driven />
       
      <!-- 打印FilesUtils日志开关 -->
 	<util:properties id="configProperties" location="classpath:logSwtich.properties"></util:properties>  

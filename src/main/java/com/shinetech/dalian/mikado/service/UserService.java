@@ -119,7 +119,7 @@ public class UserService {
 	 * @param password
 	 * @return
 	 */
-	@Cacheable(value="userEntity")
+//	@Cacheable(value="userEntity")
 	public UserEntity getUserByAccountAndPwd(String account,String password){
 		return userDao.getUserByAccountAndPwd(account, password);
 	}

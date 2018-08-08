@@ -88,6 +88,7 @@
 						<select id="SynModeValue" class="form-control">
 							<option value="0">加工批次</option>
 							<option value="1">单元识别码</option>
+							<!-- <option value="2">单元识别码所有产品</option> -->
 						</select>
 					</div>
 

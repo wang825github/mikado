@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 
 import com.shinetech.dalian.mikado.Trancking.entity.SeedDetail;
 import com.shinetech.dalian.mikado.basedao.BaseTrackingWebDao;
+import com.shinetech.dalian.mikado.basedao.HibernateTrackingDao;
 import com.shinetech.dalian.mikado.dao.DataManageDao;
 import com.shinetech.dalian.mikado.dao.TrackingWebDao;
 import com.shinetech.dalian.mikado.entity.DataManageEntity;
@@ -26,8 +27,12 @@ import com.shinetech.dalian.mikado.util.IdentificationCodeUtils;
 @Service
 @Transactional
 @Repository
-public class TrackingWebServiceImpl implements TrackingWebService{
+public class TrackingWebServiceImpl extends HibernateTrackingDao implements TrackingWebService {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Autowired
 	BaseTrackingWebDao baseTrackingWebDao;
 	@Autowired
@@ -95,6 +100,8 @@ public class TrackingWebServiceImpl implements TrackingWebService{
 		}
 		try {
 			baseTrackingWebDao.saveAll(sdList);
+			//删除重复的数据
+			deleteRepetition();
 		} catch (Exception e) {
 			return 1;
 		}
@@ -107,6 +114,10 @@ public class TrackingWebServiceImpl implements TrackingWebService{
 		return saveTrackingWeb(dm);
 	}
 
-	
+	public int deleteRepetition() {
+		int res = baseTrackingWebDao.createNativeQueryTx("DELETE FROM seed_detail WHERE id in( SELECT * FROM( SELECT MIN(id) FROM seed_detail GROUP BY   identification_code HAVING COUNT(identification_code)>1)t )");
+		if(res != 0 ) deleteRepetition();
+		return res;
+	}
 	
 }
