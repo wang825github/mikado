@@ -446,12 +446,12 @@
 						 </div>
 						 <div class="row" style="margin-bottom:10px">
 						 	<div class="col-lg-6">
-						 		<label>出库时间  <small>Delivery Day</small><span class="required muted" style="color:red">*</span></label> 
-								<input type="text" name="deliveryTime" class="form-control form_datetime" id="datetimepicker">
+						 		<label>出库时间  <small>Out of Storage Day</small><span class="required muted" style="color:red">*</span></label> 
+								<input type="text" name="outStorageDay" class="form-control form_datetime" id="datetimepicker3">
 						 	</div>
 						 	<div class="col-lg-6">
-						 		<label>发货时间  <small>Out of Storage Day</small><span class="required muted" style="color:red">*</span></label> 
-								<input type="text" name="outStorageDay" class="form-control form_datetime" id="datetimepicker3">
+						 		<label>发货时间 <small>Delivery Day</small><span class="required muted" style="color:red">*</span></label> 
+								<input type="text" name="deliveryTime" class="form-control form_datetime" id="datetimepicker">
 						 	</div>
 						</div>
 						

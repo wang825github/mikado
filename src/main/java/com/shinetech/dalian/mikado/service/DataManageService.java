@@ -22,6 +22,8 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.Region;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
@@ -72,6 +74,7 @@ public class DataManageService {
 	 * @param params
 	 * @return map which contains the searched orders by search conditions and pagination parameters
 	 */
+//	@Cacheable(value = "dataManageCache",cacheNames="dataManageCache")
 	public Map<String, Object> getDataManageByPagination(Map<String, Object> params){
 		Map<String, Object> result = new HashMap<String, Object>();
 		List<DataManageEntity> rows = new ArrayList<DataManageEntity>();
@@ -185,6 +188,7 @@ public class DataManageService {
 	 * When update the order status,then also update the status about all the productions in the order
 	 * @param dataManage
 	 */
+//	@CacheEvict(allEntries=true,value = "dataManageCache", cacheNames="dataManageCache")
 	public void editStatus(DataManageEntity dataManage) {
 		DataManageEntity dataEntity = dataManageDao.getDataManageById(dataManage.getId());
 		List<ProductionsEntity> productionsList = dataEntity.getProductions();
@@ -706,7 +710,7 @@ public class DataManageService {
 		return wb;
 		
 	}
-
+//	@CacheEvict(allEntries=true,value = "dataManageCache",cacheNames="dataManageCache")
 	public void editDataManage(DataManageEntity dataManage) {
 		DataManageEntity dataManageEntity = dataManageDao.getDataManageById(dataManage.getId());
 		CustomerEntity customer = customerDao.getCustomerById(dataManage.getCustomer().getId());

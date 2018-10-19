@@ -514,13 +514,15 @@ public class ProductionDaoImpl extends HibernateDao implements ProductionDao  {
 
 	@Override
 	public void updateProductionStatusByQRCode(ArrayList<String> QRCodeList) {
-	 
+		List<PackagingEntity> packingList = new ArrayList<>();
 		String hqlPackagingEntity = "FROM PackagingEntity p WHERE p.qRCode IN(:QRCodeList)";
 		String hql = "UPDATE ProductionsEntity p  SET status = '出库' WHERE p.packaging IN(:packingList)";
-		
+		if(QRCodeList.size() >= 2100) {
+			
+		} 
 		Query<PackagingEntity> queryList  = super.getSession().createQuery(hqlPackagingEntity);
 		queryList.setParameterList("QRCodeList",QRCodeList);
-		List<PackagingEntity> packingList = queryList.list();
+		packingList.addAll( queryList.list());
 		 
 		Query query = super.getSession().createQuery(hql);
 		query.setParameterList("packingList", packingList);

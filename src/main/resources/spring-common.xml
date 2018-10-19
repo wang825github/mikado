@@ -70,4 +70,18 @@
 	<import resource="classpath*:spring-hibernate-database.xml"/>
 
 	<import resource="classpath*:spring-security.xml"/>
+	
+	 <cache:annotation-driven/>
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="default"/>
+                </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="dataManageCache"/>
+                </bean>
+            </set>
+        </property>
+	</bean>
 </beans>

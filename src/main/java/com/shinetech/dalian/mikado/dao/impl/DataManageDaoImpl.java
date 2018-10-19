@@ -46,7 +46,7 @@ public class DataManageDaoImpl extends HibernateDao implements DataManageDao {
 	 */
 	@Override
 	public List<DataManageEntity> listDataManage(Map<String, Object> params) {
-		String hql = " From DataManageEntity order by id desc";
+		String hql = " From DataManageEntity  order by id desc";
 		if(params == null){
 			return baseDao.execute(hql);
 		}else{
@@ -181,12 +181,13 @@ public class DataManageDaoImpl extends HibernateDao implements DataManageDao {
 	
 	/**
 	 * Get data manage list by sale id,commercial name and city id by pagination function
+	 *  d left join fetch   d.productions 
 	 */
 	@Override
 	public List<DataManageEntity> listDataManageBySearches(Integer salesId,
 			String conmercialName, Integer cityId, Integer start,
 			Integer maxResult) {
-		String hql = " From DataManageEntity where customer.saleManager.id ="
+		String hql = " From DataManageEntity  where customer.saleManager.id ="
 				+ salesId + " and storage.variety.commercialName like '%"
 				+ conmercialName + "%' and customer.city.id = " + cityId
 				+ " order by id desc";
@@ -367,14 +368,18 @@ public class DataManageDaoImpl extends HibernateDao implements DataManageDao {
 	public DataManageEntity getLastOrderLotNumberBySql(String code) {
 		Session session = super.getSession();
 //		String sql = " select * from data_manage where lot_numbers like :code % order by lot_numbers desc";
-		String sql =  " select * from  data_manage where lot_numbers like '" + code +"%' ORDER BY lot_numbers desc";
+		String sql =  " select lot_numbers from  data_manage where lot_numbers like '" + code +"%' ORDER BY lot_numbers desc";
 		Query query = session.createNativeQuery(sql);
-		
-		List<DataManageEntity> orders = query.getResultList();
-		   if(CollectionUtils.isNotEmpty(orders))
-			   return orders.get(0);
-		   else 
-			   return  null;
+//		String hql = " From DataManageEntity where lotNumbers like '" + code +"%' ORDER BY lotNumbers desc";
+//		List<DataManageEntity> orders= baseDao.execute(hql);
+		List<String> orders = query.getResultList();
+
+		if (CollectionUtils.isNotEmpty(orders)) {
+			DataManageEntity dm = new DataManageEntity();
+			dm.setLotNumbers(orders.get(0));
+			return dm;
+		} else
+			return null;
 	}
 	
 	@Override

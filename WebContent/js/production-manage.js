@@ -616,20 +616,20 @@ $(function() {
         				$("#alertModal .modal-body").text(data['message']);
         				$("#alertModal").modal("show");
         				storageData = new FormData();
-//        				if(data['dataManage'] != null){
-//        					dataManage = new Object();
-//        					dataManage = data['dataManage'];
-//        					console.log(dataManage.lotNumbers);
-//        					$.ajax({
-//        						type : "post",
-//        	        			url : "../dataSynchronization/startSyn",
-//        	        			data:{synModel:0,code:dataManage.lotNumbers},
-//        	        			dataType : 'json',
-//        	        			success:function(data){
-//        	        				console.log(data['message']);
-//        	        			}
-//        					});
-//        				}
+        				if(data['dataManage'] != null){
+        					dataManage = new Object();
+        					dataManage = data['dataManage'];
+        					console.log(dataManage.lotNumbers);
+        					$.ajax({
+        						type : "post",
+        	        			url : "../dataSynchronization/startSyn",
+        	        			data:{synModel:0,code:dataManage.lotNumbers},
+        	        			dataType : 'json',
+        	        			success:function(data){
+        	        				console.log(data['message']);
+        	        			}
+        					});
+        				}
         				$('#addProductionsForm')[0].reset();
         				$("#productionsTable").bootstrapTable("refresh");
         				$('#storageFileDiv').show();

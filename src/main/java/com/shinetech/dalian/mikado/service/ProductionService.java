@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -516,9 +518,9 @@ public class ProductionService {
 			}
 			try {
 				seedDao.saveSeed(seed);
-				fileLogUtils.writeLog("2.入库成功","seedDao.saveSeed(seed)  : "+new Gson().toJson(seed));
+				fileLogUtils.writeLog("2.入库成功","seedDao.saveSeed(seed)  : "+seed.getId());
 			} catch (Exception e) {
-				fileLogUtils.writeLog("2.入库失败","seedDao.saveSeed(seed)  : "+new Gson().toJson(seed));
+				fileLogUtils.writeLog("2.入库失败","seedDao.saveSeed(seed)  : "+seed.getId());
 				e.printStackTrace();
 			}
 				
@@ -638,7 +640,31 @@ public class ProductionService {
 			return null;
 		} 
 	}
-	
+//	@CacheEvict(allEntries=true,value = "dataManageCache",cacheNames="dataManageCache")
+	public void CacheEvict() {}
+	public void saveTrackingCompletableFuture(DataManageEntity dataManage) throws Exception{
+	    System.out.println("异步线程开始");
+//		DataManageEntity dmSyn = dataManageDao.getDataManageByLotNumbers(dataManage.getLotNumbers());
+//		trackingWebService.saveTrackingWeb(dmSyn);
+//        CompletableFuture<String> completableFuture=new CompletableFuture();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//            	//数据同步开始
+//        		try {
+//        		
+//        		} catch (Exception e) {
+//        			e.printStackTrace();
+//        		}
+////        		数据同步结束
+//                //告诉completableFuture任务已经完成
+//                completableFuture.complete("result");
+//            }
+//        }).start();
+        System.out.println("异步线程结束");
+    }
+
+ 
 	/**
 	 * Delivery productions and generate orders
 	 * @param params
@@ -646,6 +672,7 @@ public class ProductionService {
 	 * @return
 	 * @throws IOException
 	 */
+
 	public Map<String, Object> deliveryProductions(Map<String, Object> params,MultipartFile uploadFile) throws IOException {
 		String result = "出库完成。";
 		fileLogUtils.writeLog("----准备出库----","");
@@ -901,9 +928,9 @@ public class ProductionService {
 		try {
 			fileLogUtils.writeLog("2.出库成功","开始productionDao.updateProductionStatusByQRCode(resultList)");
 			productionDao.updateProductionStatusByQRCode(resultList);
-			fileLogUtils.writeLog("2.出库成功","结束productionDao.updateProductionStatusByQRCode(resultList); ："+new Gson().toJson(resultList));
+			fileLogUtils.writeLog("2.出库成功","结束productionDao.updateProductionStatusByQRCode(resultList); ："+resultList.size());
 		} catch (Exception e) {
-			fileLogUtils.writeLog("2.出库失败","productionDao.updateProductionStatusByQRCode(resultList); ："+new Gson().toJson(resultList));
+			fileLogUtils.writeLog("2.出库失败","productionDao.updateProductionStatusByQRCode(resultList); ："+e.getMessage());
 			e.printStackTrace();
 		}
 //		for(ProductionsEntity entity:productions){
@@ -932,9 +959,9 @@ public class ProductionService {
 		dataManage.setIsSample((Integer)params.get("isSample"));
 		try {
 			dataManageDao.saveDataManage(dataManage);
-			fileLogUtils.writeLog("3.出库成功","dataManageDao.saveDataManage(dataManage); ："+new Gson().toJson(dataManage));
+			fileLogUtils.writeLog("3.出库成功","dataManageDao.saveDataManage(dataManage); ："+dataManage.getLotNumbers());
 		} catch (Exception e) {
-			fileLogUtils.writeLog("3.出库失败","dataManageDao.saveDataManage(dataManage); ："+new Gson().toJson(dataManage));
+			fileLogUtils.writeLog("3.出库失败","dataManageDao.saveDataManage(dataManage); ："+e.getMessage());
 			e.printStackTrace();
 		}
 	
@@ -942,16 +969,25 @@ public class ProductionService {
 		//非样品出库，根据qrcode从packaging表中找到相应的记录，并设置状态为：2：出库
 		try {
 			packagingDao.setPackagingStatusOfNonSample(resultList,2);
-			fileLogUtils.writeLog("4.出库成功","packagingDao.setPackagingStatusOfNonSample(resultList,2); ："+new Gson().toJson(resultList));
+			fileLogUtils.writeLog("4.出库成功"," 设置包装物状态为2：出库: resultList.size : "+ resultList.size());
 		} catch (Exception e) {
-			fileLogUtils.writeLog("4.出库失败","packagingDao.setPackagingStatusOfNonSample(resultList,2); ："+new Gson().toJson(resultList));
+			fileLogUtils.writeLog("4.出库失败"," 设置包装物状态为2：出库 ："+e.getMessage());
 			e.printStackTrace();
 		}
-		
-//		trackingWebService.SaveTrackingWeb(dataManage);
+	
 		fileLogUtils.writeLog("----------出库完成---------"," 出库成功");
 		result = "出库完成。";
 		returnMap.put("result", result);
+		try {
+			saveTrackingCompletableFuture(dataManage);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fileLogUtils.writeLog("5.出库失败"," 同步数据失败："+e.getMessage());
+		}
+//		同步数据不需要 这些
+		dataManage.setProductions(null);
+		dataManage.setStorage(null);
+	
 		returnMap.put("dataManage", dataManage);
 		return returnMap;
 		

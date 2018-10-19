@@ -399,7 +399,7 @@ public class ProductionManageController extends BaseController{
 		params.put("isSample", isSample);
 		fileLogUtils.writeLog("-------Controller 出库参数------","params : "+new Gson().toJson(params));
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
+		productionService.CacheEvict();
 		resultMap = productionService.deliveryProductions(params, uploadFile);
 		//Record delivery production log into DB
 		logService.logForOperation(logContent.getDELIVERYPRODUCTION(), logContent
@@ -408,6 +408,8 @@ public class ProductionManageController extends BaseController{
 		fileLogUtils.writeLog("-------Controller 出库完成------","出库结果: "+new Gson().toJson(new Gson().toJson(resultMap)));
 		return resultMap;
 	}
+	
+	 
 	
 	@RequestMapping(value="/saveTrackingWeb")
 	public @ResponseBody ResultMessage saveTrackingWeb(HttpServletRequest request,DataManageEntity dataManage){
