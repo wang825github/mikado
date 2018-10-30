@@ -46,7 +46,9 @@ public class DataManageDaoImpl extends HibernateDao implements DataManageDao {
 	 */
 	@Override
 	public List<DataManageEntity> listDataManage(Map<String, Object> params) {
-		String hql = " From DataManageEntity  order by id desc";
+		String hql = " Select new DataManageEntity(d.id, d.lotNumbers, d.oddNumbers, d.receivingTime, d.deliveryTime , d.outStorageDay, "
+				+ " d.status , d.deliveryAmount,  d.isSample, d.storage, d.customer, d.logisticCompany)  From DataManageEntity  d  LEFT JOIN d.storage "
+				+ "LEFT JOIN d.customer  LEFT JOIN d.logisticCompany order by d.id desc";
 		if(params == null){
 			return baseDao.execute(hql);
 		}else{

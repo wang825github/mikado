@@ -357,6 +357,9 @@ $(function() {
         				$("#deliveryProductionsForm select[name='customer.id']").selectpicker('val',0);
         		 	    $("#deliveryProductionsForm select[name='customer.id']").selectpicker('refersh');
         				$("#productionsTable").bootstrapTable("refresh");
+        			},
+        			error: function (jqXHR, textStatus, errorThrown) {
+        				$("#alertModal .modal-body").text('出库失败: '+jqXHR.responseText);
         			}
         		});
     		

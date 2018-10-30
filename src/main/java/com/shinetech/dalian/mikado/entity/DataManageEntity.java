@@ -36,6 +36,21 @@ public class DataManageEntity {
 	private List<ProductionsEntity> productions = new ArrayList<ProductionsEntity>(); // production information
 	private LogisticCompanyEntity logisticCompany; // logistics company information
 
+	public DataManageEntity(Integer id, String lotNumbers, String oddNumbers, Date receivingTime, Date deliveryTime,
+			Date outStorageDay, Integer status, Double deliveryAmount, Integer isSample,StorageEntity storage) {
+		super();
+		this.id = id;
+		this.lotNumbers = lotNumbers;
+		this.oddNumbers = oddNumbers;
+		this.receivingTime = receivingTime;
+		this.deliveryTime = deliveryTime;
+		this.outStorageDay = outStorageDay;
+		this.status = status;
+		this.deliveryAmount = deliveryAmount;
+		this.isSample = isSample;
+		this.storage = storage;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -164,6 +179,28 @@ public class DataManageEntity {
 
 	public void setOutStorageDay(Date outStorageDay) {
 		this.outStorageDay = outStorageDay;
+	}
+
+	public DataManageEntity() {
+		super();
+	}
+
+	public DataManageEntity(Integer id, String lotNumbers, String oddNumbers, Date receivingTime, Date deliveryTime,
+			Date outStorageDay, Integer status, Double deliveryAmount, Integer isSample, StorageEntity storage,
+			CustomerEntity customer, LogisticCompanyEntity logisticCompany) {
+		super();
+		this.id = id;
+		this.lotNumbers = lotNumbers;
+		this.oddNumbers = oddNumbers;
+		this.receivingTime = receivingTime;
+		this.deliveryTime = deliveryTime;
+		this.outStorageDay = outStorageDay;
+		this.status = status;
+		this.deliveryAmount = deliveryAmount;
+		this.isSample = isSample;
+		this.storage = storage;
+		this.customer = customer;
+		this.logisticCompany = logisticCompany;
 	}
 
 }

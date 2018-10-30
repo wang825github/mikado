@@ -324,6 +324,9 @@ $(function() {
         				}
         				$('#deliveryProductionsForm')[0].reset();
         				$("#productionsTable").bootstrapTable("refresh");
+        			},
+        			error: function (jqXHR, textStatus, errorThrown) {
+        				$("#alertModal .modal-body").text('出库失败: '+jqXHR.responseText);
         			}
         		});
     		

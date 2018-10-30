@@ -30,7 +30,7 @@ public class BaseDao extends HibernateDao{
 	public <E> void save(final E entity){
 		Session session = super.getSession();
 		session.saveOrUpdate(entity);
-//		session.flush();
+		session.flush();
 	}
 	
 	public <E> void save(final List<E> entityList){

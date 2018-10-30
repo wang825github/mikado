@@ -1,43 +1,59 @@
 package com.shinetech.dalian.sanzeng.test;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.time.LocalDate;
 
-import org.apache.tools.ant.taskdefs.Sleep;
-import org.springframework.util.StopWatch;
+import java.util.Hashtable;
 
-import com.google.gson.Gson;
-import com.shinetech.dalian.mikado.entity.AreaEntity;
-import com.shinetech.dalian.mikado.util.FileLogUtils;
+import javax.naming.AuthenticationException;
+import javax.naming.Context;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+
+
 
 
 public class Test2 {
 
-	public static void main(String[] args) throws IOException, InterruptedException {
-		StopWatch watch=new  StopWatch();
-		watch.start("search1");
-		Thread.sleep(1500);
-		Thread.sleep(1000);
-		watch.stop();
-		watch.start("search2");
-		Thread.sleep(1000);
-		watch.stop();
-		System.out.println(watch.prettyPrint());
-	}
 
-	 
+	 public static void main(String[] args) {
+	        String userName = "ext-adm-mia.wan";
+	        String password = "2018Limagrain$";
+	        String host = "127.0.0.1";
+	        String domain = "FromEarthToLife.net";
+	        String port = "389"; 
+	        String url = new String("ldap://" + host + ":" + port);
+	        String user = userName.indexOf(domain) > 0 ? userName : userName
+	                + domain;
+	        Hashtable env = new Hashtable();
+	        DirContext ctx = null;
+	        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+	        env.put(Context.SECURITY_PRINCIPAL, user); 
+	        env.put(Context.SECURITY_CREDENTIALS, password);
+	        env.put(Context.INITIAL_CONTEXT_FACTORY,
+	                "com.sun.jndi.ldap.LdapCtxFactory");
+	        env.put(Context.PROVIDER_URL, url);
+	        try {
+	            ctx = new InitialDirContext(env);
+	            System.out.println("success");
+	        } catch (AuthenticationException e) {
+	            System.out.println("failed");
+	            e.printStackTrace();
+	        } catch (javax.naming.CommunicationException e) {
+	            System.out.println("AD faid");
+	            e.printStackTrace();
+	        } catch (Exception e) {
+	            System.out.println("ID Exception");
+	            e.printStackTrace();
+	        } finally{
+	            if(null!=ctx){
+	                try {
+	                    ctx.close();
+	                    ctx=null;
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	    }
+ 
 
 }

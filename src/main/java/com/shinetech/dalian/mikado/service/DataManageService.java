@@ -727,6 +727,9 @@ public class DataManageService {
 		return variety;
 	}
 	
+	public String checkLotNumber(String code) {
+		return "";
+	}
 	public String getLotNumber(String code){
 		StopWatch watch=new  StopWatch();
 		fileLogUtils.writeLog("-DataManageService.getLotNumber开始-"," ");
