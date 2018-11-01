@@ -26,12 +26,9 @@
 	<script src="<%=request.getContextPath() %>/js/resource/bootstrap-table-zh-CN.js"></script>
 		<script src="<%=request.getContextPath() %>/js/resource/tableExport.js"></script>
 	<script src="<%=request.getContextPath() %>/js/resource/tableExport.js"></script>
-	<!-- 
-	<script src="http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-	 -->
-	<!--  Seed Manage 页面的JS 配置文件-->
+
 	<%@include file="public.jsp" %>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/data-manage.js"></script>
+
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/public.js"></script>
 	
 	<title></title>
@@ -76,25 +73,16 @@
 	<div class="container-fluid page">
 		<div class="sidebar">
 			<ul class="nav nav-pills nav-stacked">
-				<li><a href="<%=request.getContextPath()%>/productions/manage">产品管理<small>Production
-							Management</small></a></li>
-							<!-- 
-				<li><a href="<%=request.getContextPath()%>/storage/manage">库存管理<small>Storage Management</small></a></li>
-				 -->			
+				<li><a href="<%=request.getContextPath()%>/productions/manage">产品管理<small>Production Management</small></a></li>
 				<li><a href="<%=request.getContextPath()%>/seed/manage">种子管理<small>Seed Management</small></a></li>
-				<li><a href="<%=request.getContextPath()%>/packaging/manage">包装管理<small>Package
-							Management</small></a></li>
-				<li class="active"><a href="<%=request.getContextPath()%>/data/manage">订单管理<small>Order Management</small></a></li>
+				<li><a href="<%=request.getContextPath()%>/packaging/manage">包装管理<small>Package Management</small></a></li>
+				<li class=""><a href="<%=request.getContextPath()%>/data/manage">订单管理<small>Order Management</small></a></li>
 				<% if(user.getIsAdmin() == 1){ %>
-				<li><a href="<%=request.getContextPath()%>/user/manage">用户管理<small>User
-							Management</small></a></li>
+				<li><a href="<%=request.getContextPath()%>/user/manage">用户管理<small>User Management</small></a></li>
 				<% }%>
-				<li><a href="<%=request.getContextPath()%>/customer/manage">客户管理<small>Customer
-							Management</small></a></li>
-				<li><a href="<%=request.getContextPath()%>/log/manage">日志管理<small>Log
-							Management</small></a></li>
-				<li><a href="<%=request.getContextPath()%>/data/dictionary">数据字典<small>Data
-							Dictionary</small></a></li>
+				<li><a href="<%=request.getContextPath()%>/customer/manage">客户管理<small>Customer Management</small></a></li>
+				<li><a href="<%=request.getContextPath()%>/log/manage">日志管理<small>Log Management</small></a></li>
+				<li><a href="<%=request.getContextPath()%>/data/dictionary">数据字典<small>Data Dictionary</small></a></li>
 				<li><a href="<%=request.getContextPath()%>/dataSynchronization/view">数据同步<small>Data Synchronization</small></a></li>
 			</ul>
 
@@ -111,34 +99,6 @@
 						<input class="form-control" name="conmercialName" type="text" placeholder="请输入商品名">
 					</div>
 					<div class="form-group">
-						<label>城市<small>City</small></label>
-						<select class="selectpicker show-tick form-control" name="cityId"  required data-live-search="true">
-							<option value="0">--</option>
-							<c:forEach items="${cityLists }" var="city">
-								<option value="${city.id }">${city.nameCn} -- ${city.nameEn}</option>
-							</c:forEach>
-						</select>
-					</div>
-					<div class="form-group">
-						<label>区域经理 <small>SaleManage Information</small></label>
-						<select class="selectpicker show-tick form-control" name="salesManager.id"  required data-live-search="true">
-							<option value="0">--</option>
-							<c:forEach items="${salesLists }" var="sales">
-								<option value="${sales.id }">${sales.name} -- ${sales.area.nameEn }</option>
-							</c:forEach>
-						</select>
-					</div>
-					<!-- 
-					<div class="form-group">
-						<label>发货区间<small>Delivery Interval</small></label>
-						<input type="text" name="startTime" class="form-control form_datetime" placeholder="" value="">
-					</div>
-					<div class="form-group">
-						 <span style="margin-right:10px">--- </span>
-						<input type="text" name="endTime" class="form-control form_datetime" placeholder="" value="">
-					</div>
-					 -->
-					<div class="form-group">
 						<button id="searchDataManageBtn" type="submit" class="btn btn-primary">
 							搜索 <small>search</small>
 						</button>
@@ -150,27 +110,14 @@
 				<div class="table-responsive">
 					<div class="pull-left btn-broup">
 						<button id="editDataManage" class="btn btn-default" title="编辑订单信息">
-							<!--  更新状态 <small>Update Status</small>-->
+
 							<span class="glyphicon glyphicon-pencil"></span>
 						</button>
 						<button id="updateDataManage" class="btn btn-default" title="更新物流信息及发货状态">
-							<!--  更新状态 <small>Update Status</small>-->
+
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
-						<!-- 
-						<button id="exportExcel" class="btn btn-default" title="选择类型下载excel">
-							<span class="glyphicon glyphicon-download-alt"></span>
-						</button>
-						<select id="exportExcelId" name = "exportExcel">
-							<option value="0">--选择报表类型--</option>
-							<option value="1">产品信息报表</option>
-							<option value="2">销售信息报表</option>
-							<option value="3">物流信息报表</option>
-						</select>
-						<button id="deleteDataManage" class="btn btn-primary btn-xs">
-							删除 <small>Delete</small>
-						</button>
-						 -->
+
 					</div>
 					<div class="pull-right btn-broup">
 						<select id="exportExcelId" name = "exportExcel">
