@@ -5,7 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -635,15 +637,53 @@ public class PackagingDaoImpl implements PackagingDao {
 	 */
 	@Override
 	public void setPackagingStatusOfNonSample(ArrayList<String> resultList,
-			Integer status) {
-		String qrCode="'0'";
-		for(String code:resultList){
-			qrCode=qrCode+",'"+code+"'";
+			Integer status, Integer data_manage_id,List<ProductionsEntity> productionsEntities) {
+		StringBuffer productionIds= new StringBuffer();
+
+		if(CollectionUtils.isNotEmpty(productionsEntities)){
+			for(int i =0;i<productionsEntities.size();i++){
+				productionIds.append("'"+productionsEntities.get(i).getId()+"'"+",");
+				if(i % 1900 == 0 ){
+					saveProductionsEntities(productionIds,data_manage_id);
+					productionIds = new StringBuffer();
+				}
+				if(productionsEntities.size() - i<1900){
+					productionIds = new StringBuffer();
+					String sqlPara = productionsEntities.stream().skip(i-1).map(o -> "'"+String.valueOf(o.getId())+"'"+",").reduce("",String::concat);
+					saveProductionsEntities(productionIds.append(sqlPara),data_manage_id);
+					break;
+				}
+			}
 		}
-		String sql = "update packaging set status = " + status + " where QR_code in (" + qrCode +")";
+		StringBuffer qrCode= new StringBuffer();
+		if(CollectionUtils.isNotEmpty(resultList)){
+			for(int i =0;i<resultList.size();i++){
+				qrCode.append("'"+resultList.get(i)+"'"+",");
+				if(i % 2000 == 0 ){
+					savePackagingStatusOfNonSample(qrCode,status);
+					qrCode = new StringBuffer();
+				}
+				if(resultList.size() - i<2000){
+					qrCode = new StringBuffer();
+					String sqlPara = resultList.stream().skip(i-1).map(o -> o = "'"+o+"'"+",").reduce("",String::concat);
+					savePackagingStatusOfNonSample(qrCode.append(sqlPara),status);
+					break;
+				}
+			}
+		}
+
+
+	}
+	public void saveProductionsEntities(StringBuffer productionId,int dataManageId){
+		productionId.deleteCharAt(productionId.length()-1);
+		String sql = "update productions set data_manage_id = " + dataManageId  + " where QR_code in (" + productionId.toString() +")";
 		baseDao.executeSqlUpdate(sql);
 	}
-
+	public void savePackagingStatusOfNonSample(StringBuffer qrCode,Integer status){
+		qrCode.deleteCharAt(qrCode.length()-1);
+		String sql = "update packaging set status = " + status  + " where QR_code in (" + qrCode.toString() +")";
+		baseDao.executeSqlUpdate(sql);
+	}
 	@Override
 	public void updateSpeciesByPackageIdAndSpeciesId(Integer packageId, Integer speciesId) {
 		String sql = " update packaging set species_id = " + speciesId + " where packages_id = " + packageId;

@@ -955,7 +955,7 @@ public class ProductionService {
 		dataManage.setOddNumbers((String)params.get("oddNumbers"));
 		dataManage.setDeliveryAmount((Double)params.get("deliveryAmount"));
 		dataManage.setStorage(storage);
-		dataManage.setProductions(productions);
+//		dataManage.setProductions(productions);
 		dataManage.setIsSample((Integer)params.get("isSample"));
 		try {
 			dataManageDao.saveDataManage(dataManage);
@@ -968,7 +968,7 @@ public class ProductionService {
 		//设置包装物状态为2：出库
 		//非样品出库，根据qrcode从packaging表中找到相应的记录，并设置状态为：2：出库
 		try {
-			packagingDao.setPackagingStatusOfNonSample(resultList,2);
+			packagingDao.setPackagingStatusOfNonSample(resultList,2,dataManage.getId(), productions);
 			fileLogUtils.writeLog("4.出库成功"," 设置包装物状态为2：出库: resultList.size : "+ resultList.size());
 		} catch (Exception e) {
 			fileLogUtils.writeLog("4.出库失败"," 设置包装物状态为2：出库 ："+e.getMessage());
@@ -977,17 +977,10 @@ public class ProductionService {
 	
 		fileLogUtils.writeLog("----------出库完成---------"," 出库成功");
 		result = "出库完成。";
-		returnMap.put("result", result);
-		try {
-			saveTrackingCompletableFuture(dataManage);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fileLogUtils.writeLog("5.出库失败"," 同步数据失败："+e.getMessage());
-		}
 //		同步数据不需要 这些
 		dataManage.setProductions(null);
 		dataManage.setStorage(null);
-	
+		returnMap.put("result", result);
 		returnMap.put("dataManage", dataManage);
 		return returnMap;
 		

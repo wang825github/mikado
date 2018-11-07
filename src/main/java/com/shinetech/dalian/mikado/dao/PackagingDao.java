@@ -277,7 +277,7 @@ public interface PackagingDao {
 
 	void setPackagingStatus(String packageIds, Integer updateStatus,Integer originalStatus,Double amount);
 
-	void setPackagingStatusOfNonSample(ArrayList<String> resultList, Integer status);
+	void setPackagingStatusOfNonSample(ArrayList<String> resultList, Integer status, Integer data_manage_id,List<ProductionsEntity> productionsEntities);
 
 	void updateSpeciesByPackageIdAndSpeciesId(Integer packageId, Integer speciesId);
 

@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity
-@Table(name="package_info")
+//@Entity
+//@Table(name="package_info")
 public class PackageInfoEntity {
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

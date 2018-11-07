@@ -30,7 +30,7 @@ public class PackagingDataManageController {
     }
 
     @RequestMapping(value="/getPackageInfoList",method = {RequestMethod.GET,RequestMethod.POST})
-    public @ResponseBody Map<String, Object> getPackageInfoList(@RequestParam(value = "offset") Integer startPosition,@RequestParam(value = "limit")  Integer maxResult){
+    public @ResponseBody Map<String, Object> getPackageInfoList(@RequestParam(value = "offset") Integer startPosition,@RequestParam(value = "")  Integer maxResult){
         return packageInfoService.getPackageInfoList(startPosition,maxResult);
     }
 

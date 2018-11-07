@@ -332,7 +332,6 @@ $(function() {
         				$("#deliveryProductionsModal").modal('hide');
         			},
         			success : function(data) {
-        				console.log('Save Tracking Web Site!!!!!!!');
         				console.log(data['result']);
         				$("#alertModal").css("width:500px");
         				$("#alertModal .modal-body").text(data['result']);

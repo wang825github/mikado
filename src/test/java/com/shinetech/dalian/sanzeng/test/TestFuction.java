@@ -62,6 +62,12 @@ public class TestFuction {
 	 
 		@Test
 		public void tesss4() throws ParseException {
+			StringBuffer sb = new StringBuffer();
+			sb.append("c");
+			sb.append("cvv");
+			sb.append(",");
+			sb.deleteCharAt(sb.length()-1);
+			System.out.println(sb.toString());
 		} 
 		public static String compactString(String tempString) {
 			StringBuffer sb = new StringBuffer();
