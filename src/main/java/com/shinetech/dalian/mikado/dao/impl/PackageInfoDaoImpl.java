@@ -36,9 +36,9 @@ public class PackageInfoDaoImpl extends HibernateDao implements PackageInfoDao  
 
         List<PackageInfoEntity> rows = new ArrayList<>();
         if(startPosition == null && maxResult == null){
-            rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity pi WHERE pi.packageItemName = '"+packageItemName+"'"));}
+            rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity pi WHERE pi.packageItemName like '%"+packageItemName+"%'"));}
         else{
-            rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity pi WHERE pi.packageItemName = '"+packageItemName+"'", startPosition, maxResult));
+            rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity pi WHERE pi.packageItemName like '%"+packageItemName+"%'", startPosition, maxResult));
         }
         return rows;
     }
@@ -49,7 +49,7 @@ public class PackageInfoDaoImpl extends HibernateDao implements PackageInfoDao  
     }
     @Override
     public Integer getPackageInfoListSizeByPackageItemName(String packageItemName) {
-        return  Integer.valueOf(baseDao.executeGetFirst(" SELECT count(*) FROM PackageInfoEntity pi WHERE pi.packageItemName = '" + packageItemName+"'").toString());
+        return  Integer.valueOf(baseDao.executeGetFirst(" SELECT count(*) FROM PackageInfoEntity pi WHERE pi.packageItemName like '%" + packageItemName+"%'").toString());
     }
     @Override
     public List<PackageInfoEntity> queryPackageInfoList(String packageItemCode, String packageItemName,Integer startPosition,Integer maxResult) {

@@ -57,10 +57,14 @@ public class PackageInfoService {
             result.put("Success","删除成功");
             try {
                 PackageInfoEntity  packageInfoEntity = baseDao.get(PackageInfoEntity.class,Integer.valueOf(packageInfoID));
-                packageInfoDao.delPackageInfoEntity(packageInfoEntity);
+                if(packageInfoEntity == null){
+                    result.put("Success","当前ID的PackageInfo 不存在");
+                }else {
+                    packageInfoDao.delPackageInfoEntity(packageInfoEntity);
+                }
+
             } catch (NumberFormatException e) {
                 result.put("Success","删除失败");
-                e.printStackTrace();
             }
         }else {
             result.put("Failed","删除失败,部分二维码已入库");
