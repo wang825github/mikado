@@ -8,7 +8,11 @@ import java.util.Map;
 public interface PackageInfoDao {
     List<PackageInfoEntity> getPackageInfoList(Integer startPosition, Integer maxResult);
 
+    List<PackageInfoEntity> getPackageInfoList(Integer startPosition, Integer maxResult,String packageItemName);
+
     Integer getPackageInfoListSize();
+
+    Integer getPackageInfoListSizeByPackageItemName(String packageItemName);
 
     List<PackageInfoEntity> queryPackageInfoList(String packageItemCode, String packageItemName,Integer startPosition,Integer maxResult);
 

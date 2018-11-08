@@ -32,10 +32,25 @@ public class PackageInfoDaoImpl extends HibernateDao implements PackageInfoDao  
     }
 
     @Override
+    public  List<PackageInfoEntity> getPackageInfoList(Integer startPosition,Integer maxResult,String packageItemName) {
+
+        List<PackageInfoEntity> rows = new ArrayList<>();
+        if(startPosition == null && maxResult == null){
+            rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity pi WHERE pi.packageItemName = '"+packageItemName+"'"));}
+        else{
+            rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity pi WHERE pi.packageItemName = '"+packageItemName+"'", startPosition, maxResult));
+        }
+        return rows;
+    }
+
+    @Override
     public Integer getPackageInfoListSize() {
         return  Integer.valueOf(baseDao.executeGetFirst(" SELECT count(*) FROM PackageInfoEntity ").toString());
     }
-
+    @Override
+    public Integer getPackageInfoListSizeByPackageItemName(String packageItemName) {
+        return  Integer.valueOf(baseDao.executeGetFirst(" SELECT count(*) FROM PackageInfoEntity pi WHERE pi.packageItemName = '" + packageItemName+"'").toString());
+    }
     @Override
     public List<PackageInfoEntity> queryPackageInfoList(String packageItemCode, String packageItemName,Integer startPosition,Integer maxResult) {
         return null;
@@ -48,7 +63,7 @@ public class PackageInfoDaoImpl extends HibernateDao implements PackageInfoDao  
 
     @Override
     public void delPackageInfoEntity(PackageInfoEntity packageInfoEntity) {
-
+        baseDao.delete(packageInfoEntity);
     }
 
     @Override

@@ -15,7 +15,16 @@ public class PackageQrCodeEntity {
     private String QR_ID;
     private String packageBatchCode;
     private String WO_No;
+    private String packageInfoId;
 
+    @Column(name = "package_info_id")
+    public String getPackageInfoId() {
+        return packageInfoId;
+    }
+
+    public void setPackageInfoId(String packageInfoId) {
+        this.packageInfoId = packageInfoId;
+    }
 
     public PackageQrCodeEntity() {
         this.createTime = new Date();

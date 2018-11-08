@@ -32,8 +32,18 @@ public class PackagingDataManageController {
         return packageInfoService.getPackageInfoList(startPosition,maxResult);
     }
 
+    @RequestMapping(value="/queryPackageInfoList",method = {RequestMethod.GET,RequestMethod.POST})
+    public @ResponseBody Map<String, Object> getPackageInfoList(@RequestParam(value = "offset") Integer startPosition,@RequestParam(value = "limit")  Integer maxResult,String packageItemName){
+        return packageInfoService.queryPackageInfoList(startPosition,maxResult,packageItemName);
+    }
+
     @RequestMapping(value="/add",method = {RequestMethod.GET,RequestMethod.POST})
     public @ResponseBody Map<String, String> add(@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date createTime, String packageItemName,Integer qty){
         return packageInfoService.add(createTime,packageItemName,qty);
+    }
+
+    @RequestMapping(value="/del",method = {RequestMethod.GET,RequestMethod.POST})
+    public @ResponseBody Map<String, String> del(String packageInfoID){
+        return packageInfoService.del(packageInfoID);
     }
 }
