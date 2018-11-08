@@ -1,18 +1,16 @@
 package com.shinetech.dalian.mikado.controller;
 
-import com.shinetech.dalian.mikado.dao.PackageInfoDao;
-import com.shinetech.dalian.mikado.entity.PackageInfoEntity;
+
 import com.shinetech.dalian.mikado.service.PackageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +28,7 @@ public class PackagingDataManageController {
     }
 
     @RequestMapping(value="/getPackageInfoList",method = {RequestMethod.GET,RequestMethod.POST})
-    public @ResponseBody Map<String, Object> getPackageInfoList(@RequestParam(value = "offset") Integer startPosition,@RequestParam(value = "")  Integer maxResult){
+    public @ResponseBody Map<String, Object> getPackageInfoList(@RequestParam(value = "offset") Integer startPosition,@RequestParam(value = "limit")  Integer maxResult){
         return packageInfoService.getPackageInfoList(startPosition,maxResult);
     }
 

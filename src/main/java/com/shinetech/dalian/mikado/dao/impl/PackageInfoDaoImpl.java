@@ -24,9 +24,9 @@ public class PackageInfoDaoImpl extends HibernateDao implements PackageInfoDao  
 
         List<PackageInfoEntity> rows = new ArrayList<>();
         if(startPosition == null && maxResult == null){
-             rows.addAll(baseDao.execute("From PackageInfoEntity"));}
+             rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity"));}
         else{
-             rows.addAll(baseDao.executeByLimit("From PackageInfoEntity", startPosition, maxResult));
+             rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity", startPosition, maxResult));
         }
          return rows;
     }

@@ -1,27 +1,30 @@
 package com.shinetech.dalian.mikado.service;
 
+import com.google.gson.Gson;
 import com.shinetech.dalian.mikado.dao.PackageInfoDao;
+import com.shinetech.dalian.mikado.entity.DataManageEntity;
 import com.shinetech.dalian.mikado.entity.PackageInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 @Service
 public class PackageInfoService {
     @Autowired
     PackageInfoDao packageInfoDao;
 
-    public Map<String, Object> getPackageInfoList(Integer startPosition, Integer maxResult) {
-        Map<String, Object> result = new HashMap<>();
+    public   Map<String, Object> getPackageInfoList(Integer startPosition, Integer maxResult) {
+        Map<String, Object> result = new HashMap<String, Object>();
         result.put("total",packageInfoDao.getPackageInfoListSize());
-        result.put("rows",packageInfoDao.getPackageInfoList(startPosition,maxResult));
+        List<PackageInfoEntity> packageInfoEntities = packageInfoDao.getPackageInfoList(startPosition,maxResult);
+        result.put("rows",packageInfoEntities);
         return result;
     }
 
-    public Map<String,String> add(Date createTime,String packageItemName,Integer qty){
+    public   Map<String,String> add(Date createTime, String packageItemName, Integer qty){
         Map<String, String> result = new HashMap<>();
         PackageInfoEntity packageInfoEntity = new PackageInfoEntity(createTime,packageItemName,qty);
         try {
