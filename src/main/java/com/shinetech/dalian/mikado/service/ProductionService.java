@@ -355,7 +355,7 @@ public class ProductionService {
      * 6.入库操作,入库完成，seed表减去相应的重量，packages表减去相应的数量
 	 * 生成storage表和productions表，并设置 是否样品为 否：0
 	 * 
-	 * @param storage
+	 * @param
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException 
 	 */
@@ -453,7 +453,7 @@ public class ProductionService {
 			return result;
 		}
 		
-		fileLogUtils.writeLog("------开始入库------","seedIdList : "+seedIdList +" packagesIdList: "+packagesIdList);
+		fileLogUtils.writeLog("------开始入库------","seedIdList : "+seedIdList +" packagesIdList: "+packagesIdList.size());
 		StorageEntity storage = new StorageEntity();
 		storage.setSeedids(seedids);
 		storage.setPackagesids(packageids);
@@ -470,9 +470,9 @@ public class ProductionService {
 		storage.setVariety(varietyEntity);
 		try {
 			storageDao.saveStorage(storage);
-			fileLogUtils.writeLog("1.入库成功","storageDao.saveStorage(storage) : "+new Gson().toJson(storage));
+			fileLogUtils.writeLog("1.入库成功","storageDao.saveStorage(storage) : "+new Gson().toJson(storage.getId()));
 		} catch (Exception e) {
-			fileLogUtils.writeLog("1.入库失败","storageDao.saveStorage(storage) : "+new Gson().toJson(storage));
+			fileLogUtils.writeLog("1.入库失败","storageDao.saveStorage(storage) : "+new Gson().toJson(storage.getId()));
 			e.printStackTrace();
 		}
 		
@@ -538,9 +538,9 @@ public class ProductionService {
 		}
 		try {
 			baseDao.save(entityList);
-			fileLogUtils.writeLog("3.入库成功","baseDao.save(entityList) ："+new Gson().toJson(entityList));
+			fileLogUtils.writeLog("3.入库成功","baseDao.save(entityList) ："+new Gson().toJson(entityList.size()));
 		} catch (Exception e1) {
-			fileLogUtils.writeLog("3.入库失败","baseDao.save(entityList) ："+new Gson().toJson(entityList));
+			fileLogUtils.writeLog("3.入库失败","baseDao.save(entityList) ："+new Gson().toJson(entityList.size()));
 			e1.printStackTrace();
 		}
 		
@@ -704,9 +704,9 @@ public class ProductionService {
 		 */
 		
 		//2.productions表中符合条件的记录小于出库数量，不允许出库：状态为入库，外键 storage表相应 记录中关联的外键
-		fileLogUtils.writeLog("----准备出库----","storage ："+new Gson().toJson(storage));
+		fileLogUtils.writeLog("----准备出库----","storage ："+new Gson().toJson(storage.getId()));
 		List<ProductionsEntity> proList = productionDao.listProductionsByStorageAndStatus(storage, "入库");
-		fileLogUtils.writeLog("----准备出库----","productionDao.listProductionsByStorageAndStatus："+new Gson().toJson(proList));
+		fileLogUtils.writeLog("----准备出库----","productionDao.listProductionsByStorageAndStatus："+new Gson().toJson(proList.size()));
 		if((Integer)params.get("isSample") == 1){
 			fileLogUtils.writeLog("----开始出库样品----","");
 			//获取productions表中符合条件的记录数
@@ -721,9 +721,9 @@ public class ProductionService {
 			storage.setSurplusQuantity(storage.getSurplusQuantity() - (Double)params.get("deliveryAmount"));
 			try {
 				storageDao.editStorage(storage);
-				fileLogUtils.writeLog("出库样品成功","storageDao.editStorage(storage) ："+new Gson().toJson(storage));
+				fileLogUtils.writeLog("出库样品成功","storageDao.editStorage(storage) ："+new Gson().toJson(storage.getId()));
 			} catch (Exception e) {
-				fileLogUtils.writeLog("出库样品失败","storageDao.editStorage(storage) ："+new Gson().toJson(storage));
+				fileLogUtils.writeLog("出库样品失败","storageDao.editStorage(storage) ："+new Gson().toJson(storage.getId()));
 				e.printStackTrace();
 			}
 			
@@ -830,7 +830,7 @@ public class ProductionService {
 		//获取所有产品表中符合条件产品（seedId，packingUnitId，storageDay，状态为入库）
 		fileLogUtils.writeLog("----准备出库----","开始获取产品");
 		List<ProductionsEntity> productionList = productionDao.listProductionsByStorageAndStatus(storage,"入库");
-		fileLogUtils.writeLog("----准备出库----","获取库存: "+new Gson().toJson(productionList));
+		fileLogUtils.writeLog("----准备出库----","获取库存: "+new Gson().toJson(productionList.size()));
 		List<String> qRCodeList = new ArrayList<String>();
 		for(ProductionsEntity entity:productionList){
 			qRCodeList.add(entity.getPackaging().getqRCode());
@@ -918,9 +918,9 @@ public class ProductionService {
 		try {
 			fileLogUtils.writeLog("1.出库成功","开始storageDao.editStorage(storage) ：");
 			storageDao.editStorage(storage);
-			fileLogUtils.writeLog("1.出库成功","storageDao.editStorage(storage) ："+new Gson().toJson(storage));
+			fileLogUtils.writeLog("1.出库成功","storageDao.editStorage(storage) ："+new Gson().toJson(storage.getId()));
 		} catch (Exception e) {
-			fileLogUtils.writeLog("1.出库失败","storageDao.editStorage(storage) ："+new Gson().toJson(storage));
+			fileLogUtils.writeLog("1.出库失败","storageDao.editStorage(storage) ："+new Gson().toJson(storage.getId()));
 			e.printStackTrace();
 		}
 		

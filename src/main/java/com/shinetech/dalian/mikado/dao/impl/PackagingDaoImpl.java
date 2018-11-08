@@ -646,6 +646,7 @@ public class PackagingDaoImpl implements PackagingDao {
 				if(i % 1900 == 0 ){
 					saveProductionsEntities(productionIds,data_manage_id);
 					productionIds = new StringBuffer();
+					continue;
 				}
 				if(productionsEntities.size() - i<1900){
 					productionIds = new StringBuffer();
@@ -662,10 +663,18 @@ public class PackagingDaoImpl implements PackagingDao {
 				if(i % 2000 == 0 ){
 					savePackagingStatusOfNonSample(qrCode,status);
 					qrCode = new StringBuffer();
+					continue;
 				}
+				System.out.println("continue: ");
 				if(resultList.size() - i<2000){
 					qrCode = new StringBuffer();
-					String sqlPara = resultList.stream().skip(i-1).map(o -> o = "'"+o+"'"+",").reduce("",String::concat);
+					String sqlPara;
+					if(i == 0 ){
+						sqlPara = resultList.stream().map(o -> o = "'"+o+"'"+",").reduce("",String::concat);
+					}else {
+						sqlPara = resultList.stream().skip(i-1).map(o -> o = "'"+o+"'"+",").reduce("",String::concat);
+					}
+
 					savePackagingStatusOfNonSample(qrCode.append(sqlPara),status);
 					break;
 				}
@@ -676,7 +685,7 @@ public class PackagingDaoImpl implements PackagingDao {
 	}
 	public void saveProductionsEntities(StringBuffer productionId,int dataManageId){
 		productionId.deleteCharAt(productionId.length()-1);
-		String sql = "update productions set data_manage_id = " + dataManageId  + " where QR_code in (" + productionId.toString() +")";
+		String sql = "update productions set data_manage_id = " + dataManageId  + " where id in (" + productionId.toString() +")";
 		baseDao.executeSqlUpdate(sql);
 	}
 	public void savePackagingStatusOfNonSample(StringBuffer qrCode,Integer status){
