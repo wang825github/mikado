@@ -1,0 +1,14 @@
+declare @QR_ID varchar(20)
+declare @total INT
+BEGIN
+set @total = 0--初始化循环次数
+
+set IDENTITY_INSERT package_qr_code OFF
+WHILE @total<10
+	BEGIN
+		set @total = @total+1
+		set @QR_ID = cast(newid() as varchar(255))
+		set @QR_ID = convert(varchar,DATEPART(yyyy,GETDATE()))+SUBSTRING(replace(@QR_ID,'-',''),1,16)
+		INSERT package_qr_code(QR_ID,createTime) VALUES(@QR_ID,GETDATE())
+	END
+PRINT @

@@ -38,7 +38,7 @@ public class PackageInfoEntity {
         this.createTimeDto = myFmt.format(createTime);
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE,
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL,
             CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinColumn(name = "package_info_id")
     public List<PackageQrCodeEntity> getPackageQrCodeEntityList() {

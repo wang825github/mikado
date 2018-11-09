@@ -4,11 +4,9 @@ import com.google.gson.Gson;
 import com.shinetech.dalian.mikado.basedao.BaseDao;
 import com.shinetech.dalian.mikado.dao.PackageInfoDao;
 import com.shinetech.dalian.mikado.dao.PackageQrCodeEntityDao;
-import com.shinetech.dalian.mikado.entity.DataManageEntity;
 import com.shinetech.dalian.mikado.entity.PackageInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import java.util.*;
@@ -47,9 +45,12 @@ public class PackageInfoService {
             e.printStackTrace();
             result.put("Fail","新增失败");
         }
+        packageQrCodeEntityDao.insertQRCode(packageInfoEntity.getId(), qty);
         return result;
     }
+    public void generateQRcode() {
 
+    }
     public Map<String,String> del(String packageInfoID){
         Map<String, String> result = new HashMap<>();
         Integer packages =  packageQrCodeEntityDao.checkCountPackageQrCodeEntity(packageInfoID);
@@ -58,11 +59,10 @@ public class PackageInfoService {
             try {
                 PackageInfoEntity  packageInfoEntity = baseDao.get(PackageInfoEntity.class,Integer.valueOf(packageInfoID));
                 if(packageInfoEntity == null){
-                    result.put("Success","当前ID的PackageInfo 不存在");
+                    result.put("Success","当前ID的PackageInfo  不存在");
                 }else {
                     packageInfoDao.delPackageInfoEntity(packageInfoEntity);
                 }
-
             } catch (NumberFormatException e) {
                 result.put("Success","删除失败");
             }
