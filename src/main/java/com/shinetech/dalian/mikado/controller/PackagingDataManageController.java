@@ -5,14 +5,15 @@ import com.shinetech.dalian.mikado.service.PackageInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -46,4 +47,11 @@ public class PackagingDataManageController {
     public @ResponseBody Map<String, String> del(String packageInfoID){
         return packageInfoService.del(packageInfoID);
     }
+
+    @RequestMapping(value="/export",method = {RequestMethod.GET,RequestMethod.POST})
+    public @ResponseBody
+    ResponseEntity<byte[]> export(@RequestParam(value = "packageInfoID") Integer packageInfoID, HttpServletResponse response,@RequestParam(defaultValue = "QrCode") String packageName){
+     return     packageInfoService.export(packageInfoID,response,packageName);
+    }
+
 }

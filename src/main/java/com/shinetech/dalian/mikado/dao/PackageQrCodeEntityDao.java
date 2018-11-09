@@ -21,7 +21,7 @@ public class PackageQrCodeEntityDao extends HibernateDao {
         String hql = "DELETE PackageQrCodeEntity pq WHERE pq.packageBatchCode = '"+packageBatchCode+"'";
         baseDao.execute(hql);
     }
-    public void delPackageQRListByPackageInfoId(String packageInfoId){
+    public void delPackageQRListByPackageInfoId(Integer packageInfoId){
         String hql = "DELETE PackageQrCodeEntity pq WHERE pq.packageInfoId = '"+packageInfoId+"'";
         baseDao.execute(hql);
     }

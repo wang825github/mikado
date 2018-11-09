@@ -6,13 +6,22 @@ import com.shinetech.dalian.mikado.dao.PackageInfoDao;
 import com.shinetech.dalian.mikado.dao.PackageQrCodeEntityDao;
 import com.shinetech.dalian.mikado.entity.PackageInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Service
 public class PackageInfoService {
+    @Value("#{tracking['url']}")
+    String trackWebUrl;
     @Autowired
     PackageInfoDao packageInfoDao;
     @Autowired
@@ -61,6 +70,7 @@ public class PackageInfoService {
                 if(packageInfoEntity == null){
                     result.put("Success","当前ID的PackageInfo  不存在");
                 }else {
+                    packageQrCodeEntityDao.delPackageQRListByPackageInfoId(packageInfoEntity.getId());
                     packageInfoDao.delPackageInfoEntity(packageInfoEntity);
                 }
             } catch (NumberFormatException e) {
@@ -70,5 +80,17 @@ public class PackageInfoService {
             result.put("Failed","删除失败,部分二维码已入库");
         }
         return result;
+    }
+    public ResponseEntity<byte[]>  export(Integer packageId,HttpServletResponse response,String packageName){
+        PackageInfoEntity  packageInfoEntity = baseDao.get(PackageInfoEntity.class,packageId);
+        System.out.println(packageInfoEntity.getPackageQrCodeEntityList().size());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=" + packageName + ".txt");
+        headers.add("Expires", "0");
+        byte[] body = packageInfoEntity.getPackageQrCodeEntityList()
+                .stream()
+                .map(o -> trackWebUrl + o.getQR_ID()+ "\n")
+                .reduce("",String::concat).getBytes();
+        return new ResponseEntity<>(body, headers, HttpStatus.OK);
     }
 }

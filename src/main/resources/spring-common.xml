@@ -45,7 +45,8 @@
 	<context:component-scan base-package="package com.shinetech.*" />
 	<!--  开启AOP -->
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
- <bean id="webMvcAdvisor" class="com.shinetech.dalian.mikado.util.interceptor.MvcMethodLogAdvice" />  
+	<util:properties id="tracking" location="classpath*:trackingWeb.properties"></util:properties>
+	<bean id="webMvcAdvisor" class="com.shinetech.dalian.mikado.util.interceptor.MvcMethodLogAdvice" />
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
