@@ -24,9 +24,9 @@ public class PackageInfoDaoImpl extends HibernateDao implements PackageInfoDao  
 
         List<PackageInfoEntity> rows = new ArrayList<>();
         if(startPosition == null && maxResult == null){
-             rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity"));}
+             rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity order by id desc"));}
         else{
-             rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity", startPosition, maxResult));
+             rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity order by id desc", startPosition, maxResult));
         }
          return rows;
     }
@@ -36,9 +36,9 @@ public class PackageInfoDaoImpl extends HibernateDao implements PackageInfoDao  
 
         List<PackageInfoEntity> rows = new ArrayList<>();
         if(startPosition == null && maxResult == null){
-            rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity pi WHERE pi.packageItemName like '%"+packageItemName+"%'"));}
+            rows.addAll(baseDao.execute("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty) From PackageInfoEntity pi WHERE pi.packageItemName like '%"+packageItemName+"%' order by id desc"));}
         else{
-            rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity pi WHERE pi.packageItemName like '%"+packageItemName+"%'", startPosition, maxResult));
+            rows.addAll(baseDao.executeByLimit("SELECT new PackageInfoEntity(id,createTime,packageItemCode,packageItemName,qty)  From PackageInfoEntity pi WHERE pi.packageItemName like '%"+packageItemName+"%' order by id desc", startPosition, maxResult));
         }
         return rows;
     }

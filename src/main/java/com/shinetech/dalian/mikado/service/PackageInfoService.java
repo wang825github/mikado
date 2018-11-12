@@ -94,5 +94,22 @@ public class PackageInfoService {
         }
         return result;
     }
+    public  Map<String,String> edit(String packageInfoID,String packageNewName){
+        Map<String,String> res = new HashMap<>();
+        PackageInfoEntity  packageInfoEntity = baseDao.get(PackageInfoEntity.class,Integer.valueOf(packageInfoID));
+        packageInfoEntity.setPackageItemName(packageNewName);
+        try {
+            baseDao.save(packageInfoEntity);
+            res.put("message","编辑成功");
+        }catch(NumberFormatException e) {
+            res.put("message","编辑失败");
+             e.printStackTrace();
+        }
+        return res;
+    }
 
+    public PackageInfoEntity getById(String packageInfoId){
+        PackageInfoEntity  packageInfoEntity = baseDao.get(PackageInfoEntity.class,Integer.valueOf(packageInfoId));
+        return packageInfoEntity;
+    }
 }
