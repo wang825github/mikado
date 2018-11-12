@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Controller
-@RequestMapping(value="/packagingData")
+@RequestMapping(value="/packagingData",produces = "application/json;charset=UTF-8")
 public class PackagingDataManageController {
 
     @Autowired
