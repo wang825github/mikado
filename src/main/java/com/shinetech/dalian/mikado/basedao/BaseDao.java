@@ -264,13 +264,18 @@ public class BaseDao extends HibernateDao{
 		Session session = super.getSession();
 		return session.createQuery(hql).executeUpdate();
 	}
-	
-	@SuppressWarnings("deprecation")
+	public void executeUpdateFlush(final String hql) {
+		Session session = super.getSession();
+		session.createQuery(hql).executeUpdate();
+		session.clear();
+		session.flush();
+	}
+
 	public int executeSqlUpdate(final String hql) {
 		Session session = super.getSession();
 		return session.createSQLQuery(hql).executeUpdate();
 	}
-	
+
 	public <E> int executeUpdateByProperty(final Class<E> clazz, String property,String value) {
 		Session session = super.getSession();
 		String  hql = "delete "+clazz.getName()+" where "+property+" = :property";

@@ -28,6 +28,12 @@ public class PackagingDataManageController {
         return "jsp/packaging-data-manage";
     }
 
+    @RequestMapping(value="/export",method = {RequestMethod.GET,RequestMethod.POST})
+    public @ResponseBody
+    ResponseEntity<byte[]> export(@RequestParam(value = "packageInfoID") Integer packageInfoID, HttpServletResponse response,@RequestParam(defaultValue = "QrCode") String packageName){
+        return packageInfoService.export(packageInfoID,response,packageName);
+    }
+
     @RequestMapping(value="/getPackageInfoList",method = {RequestMethod.GET,RequestMethod.POST})
     public @ResponseBody Map<String, Object> getPackageInfoList(@RequestParam(value = "offset") Integer startPosition,@RequestParam(value = "limit")  Integer maxResult){
         return packageInfoService.getPackageInfoList(startPosition,maxResult);
@@ -48,10 +54,6 @@ public class PackagingDataManageController {
         return packageInfoService.del(packageInfoID);
     }
 
-    @RequestMapping(value="/export",method = {RequestMethod.GET,RequestMethod.POST})
-    public @ResponseBody
-    ResponseEntity<byte[]> export(@RequestParam(value = "packageInfoID") Integer packageInfoID, HttpServletResponse response,@RequestParam(defaultValue = "QrCode") String packageName){
-     return     packageInfoService.export(packageInfoID,response,packageName);
-    }
+
 
 }

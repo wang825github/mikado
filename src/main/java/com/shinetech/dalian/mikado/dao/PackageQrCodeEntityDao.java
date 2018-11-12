@@ -18,12 +18,16 @@ public class PackageQrCodeEntityDao extends HibernateDao {
     }
 
     public void delPackageBatchCodeListByBatchCode(String packageBatchCode){
-        String hql = "DELETE PackageQrCodeEntity pq WHERE pq.packageBatchCode = '"+packageBatchCode+"'";
+        String hql = "DELETE FROM PackageQrCodeEntity pq WHERE pq.packageBatchCode = '"+packageBatchCode+"'";
         baseDao.execute(hql);
     }
     public void delPackageQRListByPackageInfoId(Integer packageInfoId){
-        String hql = "DELETE PackageQrCodeEntity pq WHERE pq.packageInfoId = '"+packageInfoId+"'";
-        baseDao.execute(hql);
+        String hql = "DELETE FROM PackageQrCodeEntity pq WHERE pq.packageInfoId = '"+packageInfoId+"'";
+        baseDao.executeUpdateFlush(hql);
+    }
+    public void delPackageQRListIsNull(){
+        String hql = "DELETE FROM PackageQrCodeEntity pq WHERE pq.packageInfoId is Null";
+        baseDao.executeUpdateFlush(hql);
     }
     public void insertQRCode(Integer packageInfoId,Integer total){
         Session session = super.getSession();

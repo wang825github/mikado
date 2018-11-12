@@ -28,6 +28,19 @@ public class PackageInfoService {
     PackageQrCodeEntityDao packageQrCodeEntityDao;
     @Autowired
     private BaseDao baseDao;
+
+    public ResponseEntity<byte[]>  export(Integer packageId,HttpServletResponse response,String packageName){
+        PackageInfoEntity  packageInfoEntity = baseDao.get(PackageInfoEntity.class,packageId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=" + packageName + ".txt");
+        headers.add("Expires", "0");
+        byte[] body = packageInfoEntity.getPackageQrCodeEntityList()
+                .stream()
+                .map(o -> trackWebUrl + o.getQR_ID()+ "\r\n")
+                .reduce("",String::concat).getBytes();
+        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+    }
+
     public   Map<String, Object> getPackageInfoList(Integer startPosition, Integer maxResult) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total",packageInfoDao.getPackageInfoListSize());
@@ -70,8 +83,8 @@ public class PackageInfoService {
                 if(packageInfoEntity == null){
                     result.put("Success","当前ID的PackageInfo  不存在");
                 }else {
-                    packageQrCodeEntityDao.delPackageQRListByPackageInfoId(packageInfoEntity.getId());
                     packageInfoDao.delPackageInfoEntity(packageInfoEntity);
+                    packageQrCodeEntityDao.delPackageQRListIsNull();
                 }
             } catch (NumberFormatException e) {
                 result.put("Success","删除失败");
@@ -81,16 +94,5 @@ public class PackageInfoService {
         }
         return result;
     }
-    public ResponseEntity<byte[]>  export(Integer packageId,HttpServletResponse response,String packageName){
-        PackageInfoEntity  packageInfoEntity = baseDao.get(PackageInfoEntity.class,packageId);
-        System.out.println(packageInfoEntity.getPackageQrCodeEntityList().size());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=" + packageName + ".txt");
-        headers.add("Expires", "0");
-        byte[] body = packageInfoEntity.getPackageQrCodeEntityList()
-                .stream()
-                .map(o -> trackWebUrl + o.getQR_ID()+ "\n")
-                .reduce("",String::concat).getBytes();
-        return new ResponseEntity<>(body, headers, HttpStatus.OK);
-    }
+
 }
