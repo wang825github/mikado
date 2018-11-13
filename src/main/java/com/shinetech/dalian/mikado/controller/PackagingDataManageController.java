@@ -45,8 +45,8 @@ public class PackagingDataManageController {
         return packageInfoService.queryPackageInfoList(startPosition,maxResult,packageItemName);
     }
 
-    @RequestMapping(value="/add",method = {RequestMethod.GET,RequestMethod.POST},produces = "application/json;charset=UTF-8")
-    public @ResponseBody Map<String, String> add(@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date createTime, String packageItemName,Integer qty){
+    @RequestMapping(value="/add",method = {RequestMethod.GET,RequestMethod.POST},produces = "application/json;charset=UTF-8",consumes = "application/json;charset=UTF-8")
+    public @ResponseBody Map<String, String> add(@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date createTime,@RequestParam(defaultValue = "qrCode") String packageItemName,Integer qty){
         System.out.println(packageItemName);
         return packageInfoService.add(createTime,packageItemName,qty);
     }
@@ -60,6 +60,7 @@ public class PackagingDataManageController {
     public @ResponseBody Map<String, String> edit(String packageInfoID,String packageNewName){
         return packageInfoService.edit(packageInfoID,packageNewName);
     }
+
 
     @RequestMapping(value="/getById",method = {RequestMethod.GET,RequestMethod.POST},produces = "application/json;charset=UTF-8")
     public @ResponseBody PackageInfoEntity getById(String packageInfoID){

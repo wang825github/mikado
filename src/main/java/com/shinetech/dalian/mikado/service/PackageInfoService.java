@@ -103,7 +103,7 @@ public class PackageInfoService {
             res.put("message","编辑成功");
         }catch(NumberFormatException e) {
             res.put("message","编辑失败");
-             e.printStackTrace();
+            e.printStackTrace();
         }
         return res;
     }
